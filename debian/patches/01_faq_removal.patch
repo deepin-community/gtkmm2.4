@@ -1,0 +1,1145 @@
+diff -urN gtkmm-2.14.3.orig/configure gtkmm-2.14.3/configure
+--- gtkmm-2.14.3.orig/configure	2008-11-14 17:24:04.000000000 +0800
++++ gtkmm-2.14.3/configure	2009-03-05 11:54:29.000000000 +0800
+@@ -22156,7 +22156,7 @@
+ 
+ if test "x$enable_docs" = "xyes"; then
+   DOCS_SUBDIR="docs"
+-  ac_config_files="$ac_config_files docs/Makefile docs/FAQ/Makefile docs/images/Makefile docs/reference/Makefile docs/reference/Doxyfile docs/reference/images/Makefile docs/reference/images/widgets/Makefile"
++  ac_config_files="$ac_config_files docs/Makefile docs/images/Makefile docs/reference/Makefile docs/reference/Doxyfile docs/reference/images/Makefile docs/reference/images/widgets/Makefile"
+ 
+ else
+   DOCS_SUBDIR=""
+@@ -22854,7 +22854,6 @@
+     "atk/atkmm/Makefile") CONFIG_FILES="$CONFIG_FILES atk/atkmm/Makefile" ;;
+     "atk/atkmm/private/Makefile") CONFIG_FILES="$CONFIG_FILES atk/atkmm/private/Makefile" ;;
+     "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;
+-    "docs/FAQ/Makefile") CONFIG_FILES="$CONFIG_FILES docs/FAQ/Makefile" ;;
+     "docs/images/Makefile") CONFIG_FILES="$CONFIG_FILES docs/images/Makefile" ;;
+     "docs/reference/Makefile") CONFIG_FILES="$CONFIG_FILES docs/reference/Makefile" ;;
+     "docs/reference/Doxyfile") CONFIG_FILES="$CONFIG_FILES docs/reference/Doxyfile" ;;
+diff -urN gtkmm-2.14.3.orig/configure.in gtkmm-2.14.3/configure.in
+--- gtkmm-2.14.3.orig/configure.in	2008-11-14 17:23:37.000000000 +0800
++++ gtkmm-2.14.3/configure.in	2009-03-05 11:53:35.000000000 +0800
+@@ -371,7 +371,6 @@
+   DOCS_SUBDIR="docs"
+   AC_CONFIG_FILES([
+     docs/Makefile
+-      docs/FAQ/Makefile
+       docs/images/Makefile
+       docs/reference/Makefile
+       docs/reference/Doxyfile
+diff -urN gtkmm-2.14.3.orig/docs/FAQ/gtkmm-faq.xml gtkmm-2.14.3/docs/FAQ/gtkmm-faq.xml
+--- gtkmm-2.14.3.orig/docs/FAQ/gtkmm-faq.xml	2008-11-14 17:05:04.000000000 +0800
++++ gtkmm-2.14.3/docs/FAQ/gtkmm-faq.xml	1970-01-01 08:00:00.000000000 +0800
+@@ -1,500 +0,0 @@
+-<?xml version="1.0"?>
+-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+-  "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+-  <!ENTITY wwwgtk "http://www.gtk.org">
+-  <!ENTITY wwwgtkmm	"http://www.gtkmm.org">
+-  <!ENTITY wwwglademm "http://home.wtal.de/petig/">
+-  <!ENTITY wwwbakery "http://bakery.sourceforge.net/">
+-]>
+-
+-<article class="faq" id="gtkmm-faq">
+-<articleinfo>
+-  <title>gtkmm Frequently Asked Questions</title>
+-  <titleabbrev>gtkmm-faq</titleabbrev>
+-  <edition>v1.0.0</edition>
+-  <date>2001-06-24</date>
+-  <abstract>
+-    <para>Here are some frequently-asked questions and answers about
+-    gtkmm. If your questions aren't answered here then please email
+-    the <ulink url="&wwwgtkmm;/mailinglist.shtml">gtkmm mailing
+-    list</ulink>. If you would like to add to this FAQ, then please
+-    patch this file (gtkmm-faq.xml) or just send your suggestion to
+-    the <ulink url="&wwwgtkmm;/mailinglist.shtml">mailing
+-    list</ulink>.</para>
+-  </abstract>
+-</articleinfo>
+-
+-<qandaset >
+-
+-<qandadiv>
+-<title>gtkmm's place in the world.</title>
+-
+-<qandaentry>
+-<question>
+-<para>What is GTK+?</para>
+-</question>
+-<answer>
+-<para>GTK+ is the GUI widget toolkit, written in C, which serves as the foundation for the GNOME project as well as many stand-alone applications. GTK+ is the foundation on which gtkmm is built. See <ulink url="&wwwgtk;">&wwwgtk;</ulink>.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>What is gtkmm (Previously known as Gtk--)?</para>
+-</question>
+-<answer>
+-<para>gtkmm is a C++ wrapper for GTK+. That is, it is a language binding that lets you use GTK+ from C++. This includes support for C++ features such as inheritance, polymorphism and other powerful techniques which C++ programmers expect to have at their disposal.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Why is it named gtkmm?</para>
+-</question>
+-<answer>
+-<para> gtkmm was orignally named gtk-- because GTK+ already has a + in the name. However, as -- is not easily indexed by search engines the package generally went by the name gtkmm, and that's what we stuck with.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Why use gtkmm instead of GTK+?</para></question>
+-<answer>
+-<orderedlist>
+-<listitem><para>gtkmm allows you to write code using normal C++ techniques such as encapsulation, derivation, and polymorphism. As a C++ programmer you probably already realise that this leads to clearer and better organised code.</para></listitem>
+-<listitem><para>gtkmm is more type-safe, so the compiler can detect errors that would only be detected at run time when using C. This use of specific types also makes the API clearer because you can see what types should be used just by looking at a method's declaration.</para></listitem>
+-<listitem><para>Inheritance can be used to derive new widgets. The derivation of new widgets in GTK+ C code is so complicated and error prone that almost no C coders do it. As a C++ developer you know that derivation is an essential Object Orientated technique.</para></listitem>
+-<listitem><para>Member instances can be used, simplifying memory management. All GTK+ C widgets are dealt with by use of pointers. As a C++ coder you know that pointers should be avoided where possible.</para></listitem>
+-<listitem><para>Less code. The GTK+ C object model uses prefixed function names and cast macros. For instance:</para>
+-<programlisting>gtk_button_set_text(GTK_BUTTON(button), "sometext");</programlisting>
+-<para>gtkmm C++ code is shorter and clearer. For instance:</para>
+-<programlisting>button.set_text("sometext");</programlisting></listitem>
+-<listitem><para>There's no need to worry about GTK+'s inconsistent reference-counting policy.</para></listitem>
+-</orderedlist>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question><para>Why use libsigc++? Why not just use the regular GTK+ signal functions?</para></question>
+-<answer>
+-<orderedlist>
+-<listitem><para>GTK+ signals aren't typesafe, so the compiler can't tell you whether your callback has the wrong number or type of arguments or return value.</para></listitem>
+-<listitem><para>They can only be used with functions or static methods. With libsigc++ callbacks can also be instance methods, using the member data of a particular object. They can also be virtual methods which you could override in a derived class.</para></listitem>
+-</orderedlist>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question><para>Why isn't GTK+/GNOME itself written in C++.</para></question>
+-<answer>
+-<orderedlist>
+-<listitem><para>C is a simpler language so more people are familiar with it, particularly on Unix.</para></listitem>
+-<listitem><para>C can be wrapped by any other language, making the API available to more developers.</para></listitem>
+-<listitem><para>GTK+ and GNOME have very well organised C code, much more sane than most of the gnarly C code that we encounter. This is partly due to it's C-based object-orientated structure.</para></listitem>
+-</orderedlist>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question><para>Why not just use Qt if you like C++ so much?</para></question>
+-<answer><para>gtkmm developers tend to prefer gtkmm to Qt because gtkmm does things in a more C++ way. Qt originates from a time when C++ and the standard library were not standardised or well supported by compilers. It therefore duplicates a lot of stuff that is now in the standard library, such as containers and type information. Most significantly, they modified the C++ language to provide signals, so that Qt classes can not be used easily with non-Qt classes.  gtkmm was able to use standard C++ to provide signals without changing the C++ language.</para>
+-<para>Also, gtkmm and gnomemm allow you to build software which works more closely with the GNOME desktop.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>What about Inti or gcode?</para>
+-</question>
+-<answer>
+-<para>Inti was a RedHat project which aimed to create a monolothic C++
+-programming framework palatable to corporate customers, and
+-which could be led by RedHat. Among other things, it was intended to include a
+-GTK+ binding for C++. That binding was to be similar, but less
+-versatile, than gtkmm. Inti did not release any code, though some existed in CVS. That project was discontinued see <ulink url="http://sources.redhat.com/ml/inti/2002-q2/msg00001.html">here</ulink>. The Inti name has now been adopted by the previously-named gcode project.</para>
+-<para>GCode/Inti seems to have inherited some of the original Inti's code while also
+-tracking gtkmm. As far as we can tell, the only difference is that
+-GCode uses less C++ techniques, preferring to expose more of the GTK+
+-C API. At the present time, the gcode/inti FAQ makes false suggestions about gtkmm - See the questions about <link linkend="question-stl-style">STL-style iterfaces</link> and <link linkend="question-c-types">C types</link>. Also, gcode/inti forces the use of a memory management system that is equivalent to gtkmm's optional Gtk::manage() feature. It does not allow the complete range of normal C++ memory management techniques.
+-</para>
+-
+-<para>We don't know why the author chose to start a
+-separate and secret project instead of helping the gtkmm community.</para>  
+-</answer>
+-</qandaentry>
+-
+-
+-</qandadiv>
+-
+-
+-<qandadiv>
+-<title>How good is gtkmm?</title>
+-
+-<qandaentry>
+-<question>
+-<para>What systems does it run under?</para>
+-</question>
+-<answer><para>gtkmm should run under any UNIX-type system with the
+-proper compilers and libraries installed. The GNU C++ compiler (g++,
+-part of gcc) together with the GNU toolset (such as found on Linux and
+-*BSD systems) comprise its default build environment.</para>
+-<para>gtkmm can also be be built and used with:
+-<orderedlist>
+-<listitem><para>Sun's Forte C++, on Solaris.</para></listitem>
+-<listitem><para>Windows, with the mingw build tools.</para></listitem>
+-</orderedlist>
+-</para>
+-</answer>
+-</qandaentry>
+-
+-
+-<qandaentry>
+-<question>
+-<para>How complete is it?</para>
+-</question>
+-<answer>
+-<para>gtkmm tries to offer all of the functionality offered by GTK+. This means that you should be able to do anything with gtkmm that's supported by GTK+, and do it more easily. If something isn't covered then we want to know about it.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Does gtkmm support all the C++ goodies like inheritance, polymorphism, etc?</para>
+-</question>
+-<answer>
+-<para>Yes. gtkmm objects are normal C++ objects which implement the GTK+ inheritance model through C++ inheritance. You can do with the gtkmm widgets everything that you can do with any other C++ class.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Does gtkmm use Standard C++ (STL) containers such as std::string and std::list</para>
+-</question>
+-<answer>
+-<para>Yes, we believe in reusing standard C++ code wherever
+-possible. This might not be obvious at first because:
+-<orderedlist>
+-<listitem><para>gtkmm has Glib::ustring which has almost the same
+-interface as std::string.  This new type exists because the C++
+-standard does not support UTF8-encoded strings.</para></listitem>
+-<listitem><para>The gtkmm API uses types such as
+-Glib::ListHandle&lt;int&gt; which can be assigned to almost any
+-standard C++ container, such as std::list or std::vector. These
+-intermediate types have been used instead of forcing you to use
+-any particular container.</para></listitem>
+-</orderedlist>
+-</para>
+-
+-<para>In addition, some widgets, such as Gtk::TreeView, have
+-interfaces which are very similar to the standard containers. For
+-instance, you can iterate through the selected rows.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question id="question-stl-style">
+-<para>Does gtkmm force STL-style interfaces onto GTK+ widgets in a way that is inappropriate, difficult, or badly-implemented?</para>
+-</question>
+-<answer>
+-<para>
+-No, we do not force you. We have provided STL-style interfaces for some container widgets, to allow you to iterate over the child widgets, but these are in addition the the simpler interfaces. We have done this because we believe that STL-style interfaces sometimes require too much code to perform simple tasks. On the other hand, some people religiously prefer STL-code wherever possible. You have the choice.
+-</para>
+-<para>
+-These STL-interfaces are implemented with quite simple code and have been found to work without problems. There are no known bugs, as you can see on the bugs page.
+-</para>
+-<para>
+-Some classes such as Gtk::TextBuffer have only an STL-style interface. This is because the underlying widget has an STL-style interface, implemented in C. So this is the most appropriate, and easiest, way to wrap that API in C++.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question id="question-c-types">
+-<para>Does the gtkmm API use C types, such as structs?</para>
+-</question>
+-<answer>
+-<para>No, we wrap almost all parameters as C++ classes. which use C++ memory management. If you find parameters that use C types without good reason then we want to know about it.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>What applications have been written in gtkmm?</para>
+-</question>
+-<answer>
+-<para>Check out the list of applications on the <ulink url="&wwwgtkmm;/extra.shtml">Additional Resources</ulink> page from the gtkmm site.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>How does gtkmm compare to Qt?</para>
+-</question>
+-<answer>
+-<orderedlist>
+-<listitem><para>gtkmm uses pure C++. Qt requires extensions to C++ that are parsed by the moc  pre-processor.</para></listitem>
+-<listitem><para>gtkmm uses std::string, std::list, std::vector, iterators, etc. Qt has it's own Qt-specific containers.</para></listitem>
+-<listitem><para>With gtkmm normal C++ memory management can be used. Qt demands that all widgets are dealt with as pointers, and that deletion of widgets is surrendered to parent widgets.</para></listitem>
+-<listitem><para>Arrangement of widgets seems to be simpler in gtkmm. In Qt, Containers and Layouts are separate classes, and child widgets must be added to both. </para></listitem>
+-<listitem><para>The gtkmm API tends to be more explicit. The behaviour of Qt classes is often dependent upon the implicit effects of confusingly-overridden constructors.</para></listitem>
+-</orderedlist>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Have you wrapped all of the GNOME APIs as well as GTK+?</para>
+-</question>
+-<answer>
+-<para>We have wrapped gnome-libs, in gnomemm, which provides the additional GNOME functionality. Some parts, such as the gnome-vfs, and Bonobo wrappers are not yet mature.</para>
+-</answer>
+-</qandaentry>
+-
+-
+-<qandaentry>
+-<question>
+-<para>Is gtkmm &quot;bloated&quot;</para>
+-</question>
+-<answer>
+-<para>No, gtkmm is a thin wrapper. People might be surprised at the large size of the gtkmm source tarball. The gtkmm tarball is large because
+-<orderedlist>
+-<listitem><para>It contains lots of generated HTML documentation - the reference documentation, the book, and this FAQ, for instance. It also contains the Docbook XML sources for that documentation.</para></listitem>
+-<listitem><para>It contains the .hg/.ccg source files used to generate the .h/.cc C++ source files, as well as those generated files.</para></listitem>
+-</orderedlist>
+-We ship these generated files to reduce the dependencies needed to build gtkmm itself, to make your life easier.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-</qandadiv>
+-
+-<qandadiv>
+-<title>Further information</title>
+-
+-<qandaentry>
+-<question>
+-<para>Is there a gtkmm mailing list?</para>
+-</question>
+-<answer>
+-<para>Yes. See the <ulink url="&wwwgtkmm;/mailinglist.shtml">subscription page</ulink></para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>What documentation is there for gtkmm?</para>
+-</question>
+-<answer>
+-<para>There is a largely complete tutorial, automatically-generated reference documentation, this faq, and a wealth of running examples available at the <ulink url="&wwwgtkmm;/docs/gtkmm-2.4/docs/">documentation page</ulink></para>
+-</answer>
+-</qandaentry>
+-
+-
+-<qandaentry>
+-<question><para>Where can I find some example code?</para></question>
+-<answer><para>See the examples directory in the gtkmm distribution. There are also several large third-party applications whose source you can examine.</para></answer>
+-</qandaentry>
+-
+-
+-</qandadiv>
+-
+-
+-<qandadiv>
+-<title>Using gtkmm</title>
+-
+-<qandaentry>
+-<question><para>What compiler arguments should I use to compile a gtkmm program?</para></question>
+-<answer>
+-<para>For gtkmm 2, you should use pkg-config. For instance, for gtkmm 2.0/2.2:</para>
+-<para><command>pkg-config gtkmm-2.0 --libs --cflags</command></para>
+-<para>Or for gtkmm 2.4, wich installs in parallel with gtkmm 2.0/2.2:</para>
+-<para><command>pkg-config gtkmm-2.4 --libs --cflags</command></para>
+-<para>You should use pkg-config's PKG_CHECK_MODULES macro in your configure.in file, as demonstrated in the gtkmm_hello package.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>My application complains that it can't find libgtkmm.so</para>
+-</question>
+-<answer>
+-<para>Since this is the single most asked question about running GTK+ programs, we'll answer it here, even though it is in the GTK+ FAQ. Make sure the /usr/local/lib (the default install dir for gtkmm) is properly configured in your /etc/ldconf or that it is in your LD_LIBRARY_PATH environment variable.</para>
+-<para>Alternatively, specify another prefix when running configure. For instance, on RedHat, you should do this: ./configure --prefix=/usr</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>How can I build a static executable?</para>
+-</question>
+-<answer>
+-<para>gtkmm is pre-installed on most linux distributions so you don't really need to, but you can reconfigure gtkmm like so:</para>
+-<para><command>./configure --enable-static</command></para>
+-<para><command>make</command></para>
+-<para><command>make install</command></para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>How can I get the GTK+ object from a gtkmm object?</para>
+-</question>
+-<answer>
+-<para>If you need some GTK+ functionality which is not supported through gtkmm, you can call <command>Gtk::Widget::gobj()</command> (<command>gtkobj()</command> in gtkmm version 1.x) which will return a pointer to the plain C GTK+ data structure. You can then operate directly on this C object as you would in any GTK+ program.</para> 
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>How can I wrap a GTK+ widget in a gtkmm instance?</para>
+-</question>
+-<answer>
+-<para>Glib::wrap() will give you a pointer to gtkmm object. It is an
+-overloaded function, so it will give you an instance of the appropriate
+-class.</para> 
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Can I use C++ exceptions with gtkmm?</para>
+-</question>
+-<answer>
+-<para>Yes, it is possible but it is not a very good idea. The official
+-answer is that, since plain C doesn't know what a C++ exception is,
+-you can use exceptions in your gtkmm code as long as there are no C
+-functions in your call stack between the thrower and the catcher. This
+-means that you have to catch your exception locally.</para>
+-<para>You will be warned at runtime
+-about uncaught exceptions, and you can specify a different handler for
+-uncaught exceptions.  Some gtkmm methods do even use exceptions to report
+-errors.  The exceptions types that might be thrown are listed in the
+-reference documentation of these methods.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question><para>How can I use Glade and/or libglade with gtkmm?</para></question>
+-<answer>
+-<orderedlist>
+-<listitem><para>Use libglademm, which is part of gnomemm and wraps libglade.
+-It allows you to load widget information from the XML user interface
+-description files that Glade generates at runtime. This method is strongly
+-recommended. Experience has shown that it works well for large projects, and
+-there is a lot of example code out there you can look at. For an introduction,
+-see the corresponding chapter in the gtkmm tutorial.</para></listitem>
+-
+-<listitem><para>Alternatively, Glade 2 can output C++ code instead of C code,
+-when using <ulink url="&wwwglademm;">Glade--</ulink>, which is not part of gnomemm.
+-Note that code generation is a deprecated feature in Glade 3. For questions
+-regarding Glade--, please use its own mailing list.</para></listitem>
+-</orderedlist>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question><para>What does Gtk::manage(widget) do?</para></question>
+-<answer><para>- This means 'The container widget will delete this widget.' Some people prefer to use it so that they don't need to worry about when to delete their widgets. Gtk::manage() should only be used when add()ing a widget to a container widget.</para></answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>How can I learn about arranging widgets? I am confused by the packing options</para>
+-</question>
+-<answer>
+-<para>Glade is a great way to see what can be done with GTK+ and GNOME
+-widgets. Use Glade to explore the choice of widgets and to see how
+-they can be put together. You should then be able to use the same
+-settings as arguments to your widget constructors, and to the add()
+-and pack() method. Or you could us libglademm to load the GUI at runtime.</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>I'm used to MFC. Where's the Document and the View? or How do I use the Document/View idea? or How do I use the MVC pattern?</para>
+-</question>
+-<answer>
+-<orderedlist>
+-<listitem><para>Document/View (which is a useful version of MVC) is not supported directly by GTK+, though it is commonly used by GTK+ programmers.  However, the TextView and TreeView interfaces are split up into model and view.</para></listitem>
+-<listitem><para>The <ulink url="&wwwbakery;">Bakery</ulink> library makes it very easy for  gtkmm/gnomemm C++ coders to use the Document/View framework.</para></listitem>
+-</orderedlist>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>How do I load pixmaps for use with gtkmm?</para>
+-</question>
+-<answer>
+-<para>Use Gdk::Pixbuf and/or Gtk::Image.  Both are easy to use and support a wide range of image file types via pixbuf loader plugins.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Is gtkmm thread-safe?</para>
+-</question>
+-<answer>
+-<para>Paul Davis wrote:</para>
+-<para>Neither X, nor GDK nor GTK+ nor gtkmm are thread safe by
+-themselves. You must use either the gdk_threads_{enter,leave}() functions to
+-protect any and every call to GDK/GTK+/gtkmm functions, or
+-alternatively, ensure that only a single thread makes such calls. One
+-common way to do this is to have non-GUI threads send requests to the
+-GUI thread via a pipe.  The pipe is hooked into the main glib event
+-loop used by GTK.
+-</para>
+-<para>
+-Personally, i have always used the single-threaded approach, which I
+-find much more suitable for my apps.
+-</para>
+-<para>
+-Note that glibmm comes with Glib::Dispatcher, which implements
+-a cross-thread signal using the pipe approach described above.
+-</para>
+-<para>Andreas Rottmann added:</para>
+-<para>
+-If you need a more sophisticated cross-thread message-passing
+-approach, take a look at <ulink
+-url="http://libsigcx.sourceforge.net">libsigc++ extras</ulink>. It
+-provides cross-thread, typesafe slot invocation on top of <ulink
+-url="http://libsigc.sourceforge.net">libsigc++</ulink> and comes with
+-a <ulink
+-url="http://libsigcx.sourceforge.net/docs/sigcx_starting.html">gtkmm
+-example</ulink>.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-<qandaentry>
+-<question>
+-<para>Why does my application seem to segfault inside a dynamic_cast&lt;&gt;
+-in gtkmm?</para>
+-</question>
+-<answer>
+-<para>
+-gcc 2.96 and earlier have a bug which prevents use of dynamic_cast&lt;&gt;
+-during a constructor. This is only a problem when you derive a new
+-class from a gtkmm class and specify a specific base class
+-constructor. You can avoid this by using a different constructor. For instance, instead of using the
+-Gtk::Button(&quot;sometext&quot;) constructor, you could use the
+-default constructor and then call Gtk::Button::set_label().
+-See this <ulink
+-		url="http://bugzilla.gnome.org/show_bug.cgi?id=78578">bug report</ulink> for more information. This bug does not apply to all non-default constructors - if you are using an old compiler then you should just try it and see.
+-</para>
+-</answer>
+-</qandaentry>
+-
+-
+-</qandadiv>
+-
+-</qandaset>
+-
+-
+-  
+-
+-</article>
+diff -urN gtkmm-2.14.3.orig/docs/FAQ/html/index.html gtkmm-2.14.3/docs/FAQ/html/index.html
+--- gtkmm-2.14.3.orig/docs/FAQ/html/index.html	2008-11-14 17:45:46.000000000 +0800
++++ gtkmm-2.14.3/docs/FAQ/html/index.html	1970-01-01 08:00:00.000000000 +0800
+@@ -1,96 +0,0 @@
+-<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>gtkmm Frequently Asked Questions</title><meta name="generator" content="DocBook XSL Stylesheets V1.73.2"><meta name="description" content="Here are some frequently-asked questions and answers about gtkmm. If your questions aren't answered here then please email the gtkmm mailing list. If you would like to add to this FAQ, then please patch this file (gtkmm-faq.xml) or just send your suggestion to the mailing list."><link rel="start" href="index.html" title="gtkmm Frequently Asked Questions"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">gtkmm Frequently Asked Questions</th></tr></table><hr></div><div class="article" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="gtkmm-faq"></a>gtkmm Frequently Asked Questions</h2></div><div><div class="abstract"><p class="title"><b>Abstract</b></p><p>Here are some frequently-asked questions and answers about
+-    gtkmm. If your questions aren't answered here then please email
+-    the <a class="ulink" href="http://www.gtkmm.org/mailinglist.shtml" target="_top">gtkmm mailing
+-    list</a>. If you would like to add to this FAQ, then please
+-    patch this file (gtkmm-faq.xml) or just send your suggestion to
+-    the <a class="ulink" href="http://www.gtkmm.org/mailinglist.shtml" target="_top">mailing
+-    list</a>.</p></div></div></div><hr></div><div class="qandaset"><dl><dt>1.  <a href="index.html#id2883938">gtkmm's place in the world.</a></dt><dd><dl><dt>1.1. <a href="index.html#id2844870">What is GTK+?</a></dt><dt>1.2. <a href="index.html#id2844895">What is gtkmm (Previously known as Gtk--)?</a></dt><dt>1.3. <a href="index.html#id2883953">Why is it named gtkmm?</a></dt><dt>1.4. <a href="index.html#id2883973">Why use gtkmm instead of GTK+?</a></dt><dt>1.5. <a href="index.html#id2844127">Why use libsigc++? Why not just use the regular GTK+ signal functions?</a></dt><dt>1.6. <a href="index.html#id2844162">Why isn't GTK+/GNOME itself written in C++.</a></dt><dt>1.7. <a href="index.html#id2844199">Why not just use Qt if you like C++ so much?</a></dt><dt>1.8. <a href="index.html#id2844227">What about Inti or gcode?</a></dt></dl></dd><dt>2.  <a href="index.html#id2844574">How good is gtkmm?</a></dt><dd><dl><dt>2.1. <a href="index.html#id2844580">What systems does it run under?</a></dt><dt>2.2. <a href="index.html#id2844619">How complete is it?</a></dt><dt>2.3. <a href="index.html#id2844640">Does gtkmm support all the C++ goodies like inheritance, polymorphism, etc?</a></dt><dt>2.4. <a href="index.html#id2844660">Does gtkmm use Standard C++ (STL) containers such as std::string and std::list</a></dt><dt>2.5. <a href="index.html#id2845035">Does gtkmm force STL-style interfaces onto GTK+ widgets in a way that is inappropriate, difficult, or badly-implemented?</a></dt><dt>2.6. <a href="index.html#id2845077">Does the gtkmm API use C types, such as structs?</a></dt><dt>2.7. <a href="index.html#id2845100">What applications have been written in gtkmm?</a></dt><dt>2.8. <a href="index.html#id2845123">How does gtkmm compare to Qt?</a></dt><dt>2.9. <a href="index.html#id2845177">Have you wrapped all of the GNOME APIs as well as GTK+?</a></dt><dt>2.10. <a href="index.html#id2845197">Is gtkmm "bloated"</a></dt></dl></dd><dt>3.  <a href="index.html#id2845240">Further information</a></dt><dd><dl><dt>3.1. <a href="index.html#id2845246">Is there a gtkmm mailing list?</a></dt><dt>3.2. <a href="index.html#id2845268">What documentation is there for gtkmm?</a></dt><dt>3.3. <a href="index.html#id2845293">Where can I find some example code?</a></dt></dl></dd><dt>4.  <a href="index.html#id2845309">Using gtkmm</a></dt><dd><dl><dt>4.1. <a href="index.html#id2845314">What compiler arguments should I use to compile a gtkmm program?</a></dt><dt>4.2. <a href="index.html#id2845355">My application complains that it can't find libgtkmm.so</a></dt><dt>4.3. <a href="index.html#id2845383">How can I build a static executable?</a></dt><dt>4.4. <a href="index.html#id2845422">How can I get the GTK+ object from a gtkmm object?</a></dt><dt>4.5. <a href="index.html#id2893137">How can I wrap a GTK+ widget in a gtkmm instance?</a></dt><dt>4.6. <a href="index.html#id2893157">Can I use C++ exceptions with gtkmm?</a></dt><dt>4.7. <a href="index.html#id2893187">How can I use Glade and/or libglade with gtkmm?</a></dt><dt>4.8. <a href="index.html#id2893232">What does Gtk::manage(widget) do?</a></dt><dt>4.9. <a href="index.html#id2893247">How can I learn about arranging widgets? I am confused by the packing options</a></dt><dt>4.10. <a href="index.html#id2893271">I'm used to MFC. Where's the Document and the View? or How do I use the Document/View idea? or How do I use the MVC pattern?</a></dt><dt>4.11. <a href="index.html#id2893313">How do I load pixmaps for use with gtkmm?</a></dt><dt>4.12. <a href="index.html#id2893332">Is gtkmm thread-safe?</a></dt><dt>4.13. <a href="index.html#id2893396">Why does my application seem to segfault inside a dynamic_cast&lt;&gt;
+-in gtkmm?</a></dt></dl></dd></dl><table border="0" summary="Q and A Set"><col align="left" width="1%"><tbody><tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title"><a name="id2883938"></a>1. gtkmm's place in the world.</h3></td></tr><tr class="toc"><td align="left" valign="top" colspan="2"><dl><dt>1.1. <a href="index.html#id2844870">What is GTK+?</a></dt><dt>1.2. <a href="index.html#id2844895">What is gtkmm (Previously known as Gtk--)?</a></dt><dt>1.3. <a href="index.html#id2883953">Why is it named gtkmm?</a></dt><dt>1.4. <a href="index.html#id2883973">Why use gtkmm instead of GTK+?</a></dt><dt>1.5. <a href="index.html#id2844127">Why use libsigc++? Why not just use the regular GTK+ signal functions?</a></dt><dt>1.6. <a href="index.html#id2844162">Why isn't GTK+/GNOME itself written in C++.</a></dt><dt>1.7. <a href="index.html#id2844199">Why not just use Qt if you like C++ so much?</a></dt><dt>1.8. <a href="index.html#id2844227">What about Inti or gcode?</a></dt></dl></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844870"></a><a name="id2844872"></a><p><b>1.1.</b></p></td><td align="left" valign="top"><p>What is GTK+?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>GTK+ is the GUI widget toolkit, written in C, which serves as the foundation for the GNOME project as well as many stand-alone applications. GTK+ is the foundation on which gtkmm is built. See <a class="ulink" href="http://www.gtk.org" target="_top">http://www.gtk.org</a>.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844895"></a><a name="id2844897"></a><p><b>1.2.</b></p></td><td align="left" valign="top"><p>What is gtkmm (Previously known as Gtk--)?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>gtkmm is a C++ wrapper for GTK+. That is, it is a language binding that lets you use GTK+ from C++. This includes support for C++ features such as inheritance, polymorphism and other powerful techniques which C++ programmers expect to have at their disposal.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2883953"></a><a name="id2883955"></a><p><b>1.3.</b></p></td><td align="left" valign="top"><p>Why is it named gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p> gtkmm was orignally named gtk-- because GTK+ already has a + in the name. However, as -- is not easily indexed by search engines the package generally went by the name gtkmm, and that's what we stuck with.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2883973"></a><a name="id2883975"></a><p><b>1.4.</b></p></td><td align="left" valign="top"><p>Why use gtkmm instead of GTK+?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><div class="orderedlist"><ol type="1"><li><p>gtkmm allows you to write code using normal C++ techniques such as encapsulation, derivation, and polymorphism. As a C++ programmer you probably already realise that this leads to clearer and better organised code.</p></li><li><p>gtkmm is more type-safe, so the compiler can detect errors that would only be detected at run time when using C. This use of specific types also makes the API clearer because you can see what types should be used just by looking at a method's declaration.</p></li><li><p>Inheritance can be used to derive new widgets. The derivation of new widgets in GTK+ C code is so complicated and error prone that almost no C coders do it. As a C++ developer you know that derivation is an essential Object Orientated technique.</p></li><li><p>Member instances can be used, simplifying memory management. All GTK+ C widgets are dealt with by use of pointers. As a C++ coder you know that pointers should be avoided where possible.</p></li><li><p>Less code. The GTK+ C object model uses prefixed function names and cast macros. For instance:</p><pre class="programlisting">gtk_button_set_text(GTK_BUTTON(button), "sometext");</pre><p>gtkmm C++ code is shorter and clearer. For instance:</p><pre class="programlisting">button.set_text("sometext");</pre></li><li><p>There's no need to worry about GTK+'s inconsistent reference-counting policy.</p></li></ol></div></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844127"></a><a name="id2844130"></a><p><b>1.5.</b></p></td><td align="left" valign="top"><p>Why use libsigc++? Why not just use the regular GTK+ signal functions?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><div class="orderedlist"><ol type="1"><li><p>GTK+ signals aren't typesafe, so the compiler can't tell you whether your callback has the wrong number or type of arguments or return value.</p></li><li><p>They can only be used with functions or static methods. With libsigc++ callbacks can also be instance methods, using the member data of a particular object. They can also be virtual methods which you could override in a derived class.</p></li></ol></div></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844162"></a><a name="id2844164"></a><p><b>1.6.</b></p></td><td align="left" valign="top"><p>Why isn't GTK+/GNOME itself written in C++.</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><div class="orderedlist"><ol type="1"><li><p>C is a simpler language so more people are familiar with it, particularly on Unix.</p></li><li><p>C can be wrapped by any other language, making the API available to more developers.</p></li><li><p>GTK+ and GNOME have very well organised C code, much more sane than most of the gnarly C code that we encounter. This is partly due to it's C-based object-orientated structure.</p></li></ol></div></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844199"></a><a name="id2844201"></a><p><b>1.7.</b></p></td><td align="left" valign="top"><p>Why not just use Qt if you like C++ so much?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>gtkmm developers tend to prefer gtkmm to Qt because gtkmm does things in a more C++ way. Qt originates from a time when C++ and the standard library were not standardised or well supported by compilers. It therefore duplicates a lot of stuff that is now in the standard library, such as containers and type information. Most significantly, they modified the C++ language to provide signals, so that Qt classes can not be used easily with non-Qt classes.  gtkmm was able to use standard C++ to provide signals without changing the C++ language.</p><p>Also, gtkmm and gnomemm allow you to build software which works more closely with the GNOME desktop.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844227"></a><a name="id2844229"></a><p><b>1.8.</b></p></td><td align="left" valign="top"><p>What about Inti or gcode?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Inti was a RedHat project which aimed to create a monolothic C++
+-programming framework palatable to corporate customers, and
+-which could be led by RedHat. Among other things, it was intended to include a
+-GTK+ binding for C++. That binding was to be similar, but less
+-versatile, than gtkmm. Inti did not release any code, though some existed in CVS. That project was discontinued see <a class="ulink" href="http://sources.redhat.com/ml/inti/2002-q2/msg00001.html" target="_top">here</a>. The Inti name has now been adopted by the previously-named gcode project.</p><p>GCode/Inti seems to have inherited some of the original Inti's code while also
+-tracking gtkmm. As far as we can tell, the only difference is that
+-GCode uses less C++ techniques, preferring to expose more of the GTK+
+-C API. At the present time, the gcode/inti FAQ makes false suggestions about gtkmm - See the questions about <a class="link" href="index.html#question-stl-style" title="Question">STL-style iterfaces</a> and <a class="link" href="index.html#question-c-types" title="Question">C types</a>. Also, gcode/inti forces the use of a memory management system that is equivalent to gtkmm's optional Gtk::manage() feature. It does not allow the complete range of normal C++ memory management techniques.
+-</p><p>We don't know why the author chose to start a
+-separate and secret project instead of helping the gtkmm community.</p></td></tr><tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title"><a name="id2844574"></a>2. How good is gtkmm?</h3></td></tr><tr class="toc"><td align="left" valign="top" colspan="2"><dl><dt>2.1. <a href="index.html#id2844580">What systems does it run under?</a></dt><dt>2.2. <a href="index.html#id2844619">How complete is it?</a></dt><dt>2.3. <a href="index.html#id2844640">Does gtkmm support all the C++ goodies like inheritance, polymorphism, etc?</a></dt><dt>2.4. <a href="index.html#id2844660">Does gtkmm use Standard C++ (STL) containers such as std::string and std::list</a></dt><dt>2.5. <a href="index.html#id2845035">Does gtkmm force STL-style interfaces onto GTK+ widgets in a way that is inappropriate, difficult, or badly-implemented?</a></dt><dt>2.6. <a href="index.html#id2845077">Does the gtkmm API use C types, such as structs?</a></dt><dt>2.7. <a href="index.html#id2845100">What applications have been written in gtkmm?</a></dt><dt>2.8. <a href="index.html#id2845123">How does gtkmm compare to Qt?</a></dt><dt>2.9. <a href="index.html#id2845177">Have you wrapped all of the GNOME APIs as well as GTK+?</a></dt><dt>2.10. <a href="index.html#id2845197">Is gtkmm "bloated"</a></dt></dl></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844580"></a><a name="id2844582"></a><p><b>2.1.</b></p></td><td align="left" valign="top"><p>What systems does it run under?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>gtkmm should run under any UNIX-type system with the
+-proper compilers and libraries installed. The GNU C++ compiler (g++,
+-part of gcc) together with the GNU toolset (such as found on Linux and
+-*BSD systems) comprise its default build environment.</p><p>gtkmm can also be be built and used with:
+-</p><div class="orderedlist"><ol type="1"><li><p>Sun's Forte C++, on Solaris.</p></li><li><p>Windows, with the mingw build tools.</p></li></ol></div><p>
+-</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844619"></a><a name="id2844621"></a><p><b>2.2.</b></p></td><td align="left" valign="top"><p>How complete is it?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>gtkmm tries to offer all of the functionality offered by GTK+. This means that you should be able to do anything with gtkmm that's supported by GTK+, and do it more easily. If something isn't covered then we want to know about it.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844640"></a><a name="id2844642"></a><p><b>2.3.</b></p></td><td align="left" valign="top"><p>Does gtkmm support all the C++ goodies like inheritance, polymorphism, etc?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Yes. gtkmm objects are normal C++ objects which implement the GTK+ inheritance model through C++ inheritance. You can do with the gtkmm widgets everything that you can do with any other C++ class.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2844660"></a><a name="id2844662"></a><p><b>2.4.</b></p></td><td align="left" valign="top"><p>Does gtkmm use Standard C++ (STL) containers such as std::string and std::list</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Yes, we believe in reusing standard C++ code wherever
+-possible. This might not be obvious at first because:
+-</p><div class="orderedlist"><ol type="1"><li><p>gtkmm has Glib::ustring which has almost the same
+-interface as std::string.  This new type exists because the C++
+-standard does not support UTF8-encoded strings.</p></li><li><p>The gtkmm API uses types such as
+-Glib::ListHandle&lt;int&gt; which can be assigned to almost any
+-standard C++ container, such as std::list or std::vector. These
+-intermediate types have been used instead of forcing you to use
+-any particular container.</p></li></ol></div><p>
+-</p><p>In addition, some widgets, such as Gtk::TreeView, have
+-interfaces which are very similar to the standard containers. For
+-instance, you can iterate through the selected rows.
+-</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845035"></a><a name="question-stl-style"></a><p><b>2.5.</b></p></td><td align="left" valign="top"><p>Does gtkmm force STL-style interfaces onto GTK+ widgets in a way that is inappropriate, difficult, or badly-implemented?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+-No, we do not force you. We have provided STL-style interfaces for some container widgets, to allow you to iterate over the child widgets, but these are in addition the the simpler interfaces. We have done this because we believe that STL-style interfaces sometimes require too much code to perform simple tasks. On the other hand, some people religiously prefer STL-code wherever possible. You have the choice.
+-</p><p>
+-These STL-interfaces are implemented with quite simple code and have been found to work without problems. There are no known bugs, as you can see on the bugs page.
+-</p><p>
+-Some classes such as Gtk::TextBuffer have only an STL-style interface. This is because the underlying widget has an STL-style interface, implemented in C. So this is the most appropriate, and easiest, way to wrap that API in C++.
+-</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845077"></a><a name="question-c-types"></a><p><b>2.6.</b></p></td><td align="left" valign="top"><p>Does the gtkmm API use C types, such as structs?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>No, we wrap almost all parameters as C++ classes. which use C++ memory management. If you find parameters that use C types without good reason then we want to know about it.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845100"></a><a name="id2845102"></a><p><b>2.7.</b></p></td><td align="left" valign="top"><p>What applications have been written in gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Check out the list of applications on the <a class="ulink" href="http://www.gtkmm.org/extra.shtml" target="_top">Additional Resources</a> page from the gtkmm site.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845123"></a><a name="id2845125"></a><p><b>2.8.</b></p></td><td align="left" valign="top"><p>How does gtkmm compare to Qt?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><div class="orderedlist"><ol type="1"><li><p>gtkmm uses pure C++. Qt requires extensions to C++ that are parsed by the moc  pre-processor.</p></li><li><p>gtkmm uses std::string, std::list, std::vector, iterators, etc. Qt has it's own Qt-specific containers.</p></li><li><p>With gtkmm normal C++ memory management can be used. Qt demands that all widgets are dealt with as pointers, and that deletion of widgets is surrendered to parent widgets.</p></li><li><p>Arrangement of widgets seems to be simpler in gtkmm. In Qt, Containers and Layouts are separate classes, and child widgets must be added to both. </p></li><li><p>The gtkmm API tends to be more explicit. The behaviour of Qt classes is often dependent upon the implicit effects of confusingly-overridden constructors.</p></li></ol></div></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845177"></a><a name="id2845179"></a><p><b>2.9.</b></p></td><td align="left" valign="top"><p>Have you wrapped all of the GNOME APIs as well as GTK+?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>We have wrapped gnome-libs, in gnomemm, which provides the additional GNOME functionality. Some parts, such as the gnome-vfs, and Bonobo wrappers are not yet mature.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845197"></a><a name="id2845199"></a><p><b>2.10.</b></p></td><td align="left" valign="top"><p>Is gtkmm "bloated"</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>No, gtkmm is a thin wrapper. People might be surprised at the large size of the gtkmm source tarball. The gtkmm tarball is large because
+-</p><div class="orderedlist"><ol type="1"><li><p>It contains lots of generated HTML documentation - the reference documentation, the book, and this FAQ, for instance. It also contains the Docbook XML sources for that documentation.</p></li><li><p>It contains the .hg/.ccg source files used to generate the .h/.cc C++ source files, as well as those generated files.</p></li></ol></div><p>
+-We ship these generated files to reduce the dependencies needed to build gtkmm itself, to make your life easier.
+-</p></td></tr><tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title"><a name="id2845240"></a>3. Further information</h3></td></tr><tr class="toc"><td align="left" valign="top" colspan="2"><dl><dt>3.1. <a href="index.html#id2845246">Is there a gtkmm mailing list?</a></dt><dt>3.2. <a href="index.html#id2845268">What documentation is there for gtkmm?</a></dt><dt>3.3. <a href="index.html#id2845293">Where can I find some example code?</a></dt></dl></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845246"></a><a name="id2845248"></a><p><b>3.1.</b></p></td><td align="left" valign="top"><p>Is there a gtkmm mailing list?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Yes. See the <a class="ulink" href="http://www.gtkmm.org/mailinglist.shtml" target="_top">subscription page</a></p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845268"></a><a name="id2845271"></a><p><b>3.2.</b></p></td><td align="left" valign="top"><p>What documentation is there for gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>There is a largely complete tutorial, automatically-generated reference documentation, this faq, and a wealth of running examples available at the <a class="ulink" href="http://www.gtkmm.org/docs/gtkmm-2.4/docs/" target="_top">documentation page</a></p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845293"></a><a name="id2845296"></a><p><b>3.3.</b></p></td><td align="left" valign="top"><p>Where can I find some example code?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>See the examples directory in the gtkmm distribution. There are also several large third-party applications whose source you can examine.</p></td></tr><tr class="qandadiv"><td align="left" valign="top" colspan="2"><h3 class="title"><a name="id2845309"></a>4. Using gtkmm</h3></td></tr><tr class="toc"><td align="left" valign="top" colspan="2"><dl><dt>4.1. <a href="index.html#id2845314">What compiler arguments should I use to compile a gtkmm program?</a></dt><dt>4.2. <a href="index.html#id2845355">My application complains that it can't find libgtkmm.so</a></dt><dt>4.3. <a href="index.html#id2845383">How can I build a static executable?</a></dt><dt>4.4. <a href="index.html#id2845422">How can I get the GTK+ object from a gtkmm object?</a></dt><dt>4.5. <a href="index.html#id2893137">How can I wrap a GTK+ widget in a gtkmm instance?</a></dt><dt>4.6. <a href="index.html#id2893157">Can I use C++ exceptions with gtkmm?</a></dt><dt>4.7. <a href="index.html#id2893187">How can I use Glade and/or libglade with gtkmm?</a></dt><dt>4.8. <a href="index.html#id2893232">What does Gtk::manage(widget) do?</a></dt><dt>4.9. <a href="index.html#id2893247">How can I learn about arranging widgets? I am confused by the packing options</a></dt><dt>4.10. <a href="index.html#id2893271">I'm used to MFC. Where's the Document and the View? or How do I use the Document/View idea? or How do I use the MVC pattern?</a></dt><dt>4.11. <a href="index.html#id2893313">How do I load pixmaps for use with gtkmm?</a></dt><dt>4.12. <a href="index.html#id2893332">Is gtkmm thread-safe?</a></dt><dt>4.13. <a href="index.html#id2893396">Why does my application seem to segfault inside a dynamic_cast&lt;&gt;
+-in gtkmm?</a></dt></dl></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845314"></a><a name="id2845316"></a><p><b>4.1.</b></p></td><td align="left" valign="top"><p>What compiler arguments should I use to compile a gtkmm program?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>For gtkmm 2, you should use pkg-config. For instance, for gtkmm 2.0/2.2:</p><p><span class="command"><strong>pkg-config gtkmm-2.0 --libs --cflags</strong></span></p><p>Or for gtkmm 2.4, wich installs in parallel with gtkmm 2.0/2.2:</p><p><span class="command"><strong>pkg-config gtkmm-2.4 --libs --cflags</strong></span></p><p>You should use pkg-config's PKG_CHECK_MODULES macro in your configure.in file, as demonstrated in the gtkmm_hello package.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845355"></a><a name="id2845357"></a><p><b>4.2.</b></p></td><td align="left" valign="top"><p>My application complains that it can't find libgtkmm.so</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Since this is the single most asked question about running GTK+ programs, we'll answer it here, even though it is in the GTK+ FAQ. Make sure the /usr/local/lib (the default install dir for gtkmm) is properly configured in your /etc/ldconf or that it is in your LD_LIBRARY_PATH environment variable.</p><p>Alternatively, specify another prefix when running configure. For instance, on RedHat, you should do this: ./configure --prefix=/usr</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845383"></a><a name="id2845385"></a><p><b>4.3.</b></p></td><td align="left" valign="top"><p>How can I build a static executable?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>gtkmm is pre-installed on most linux distributions so you don't really need to, but you can reconfigure gtkmm like so:</p><p><span class="command"><strong>./configure --enable-static</strong></span></p><p><span class="command"><strong>make</strong></span></p><p><span class="command"><strong>make install</strong></span></p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2845422"></a><a name="id2845424"></a><p><b>4.4.</b></p></td><td align="left" valign="top"><p>How can I get the GTK+ object from a gtkmm object?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>If you need some GTK+ functionality which is not supported through gtkmm, you can call <span class="command"><strong>Gtk::Widget::gobj()</strong></span> (<span class="command"><strong>gtkobj()</strong></span> in gtkmm version 1.x) which will return a pointer to the plain C GTK+ data structure. You can then operate directly on this C object as you would in any GTK+ program.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893137"></a><a name="id2893139"></a><p><b>4.5.</b></p></td><td align="left" valign="top"><p>How can I wrap a GTK+ widget in a gtkmm instance?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Glib::wrap() will give you a pointer to gtkmm object. It is an
+-overloaded function, so it will give you an instance of the appropriate
+-class.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893157"></a><a name="id2893159"></a><p><b>4.6.</b></p></td><td align="left" valign="top"><p>Can I use C++ exceptions with gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Yes, it is possible but it is not a very good idea. The official
+-answer is that, since plain C doesn't know what a C++ exception is,
+-you can use exceptions in your gtkmm code as long as there are no C
+-functions in your call stack between the thrower and the catcher. This
+-means that you have to catch your exception locally.</p><p>You will be warned at runtime
+-about uncaught exceptions, and you can specify a different handler for
+-uncaught exceptions.  Some gtkmm methods do even use exceptions to report
+-errors.  The exceptions types that might be thrown are listed in the
+-reference documentation of these methods.
+-</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893187"></a><a name="id2893189"></a><p><b>4.7.</b></p></td><td align="left" valign="top"><p>How can I use Glade and/or libglade with gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><div class="orderedlist"><ol type="1"><li><p>Use libglademm, which is part of gnomemm and wraps libglade.
+-It allows you to load widget information from the XML user interface
+-description files that Glade generates at runtime. This method is strongly
+-recommended. Experience has shown that it works well for large projects, and
+-there is a lot of example code out there you can look at. For an introduction,
+-see the corresponding chapter in the gtkmm tutorial.</p></li><li><p>Alternatively, Glade 2 can output C++ code instead of C code,
+-when using <a class="ulink" href="http://home.wtal.de/petig/" target="_top">Glade--</a>, which is not part of gnomemm.
+-Note that code generation is a deprecated feature in Glade 3. For questions
+-regarding Glade--, please use its own mailing list.</p></li></ol></div></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893232"></a><a name="id2893234"></a><p><b>4.8.</b></p></td><td align="left" valign="top"><p>What does Gtk::manage(widget) do?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>- This means 'The container widget will delete this widget.' Some people prefer to use it so that they don't need to worry about when to delete their widgets. Gtk::manage() should only be used when add()ing a widget to a container widget.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893247"></a><a name="id2893250"></a><p><b>4.9.</b></p></td><td align="left" valign="top"><p>How can I learn about arranging widgets? I am confused by the packing options</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Glade is a great way to see what can be done with GTK+ and GNOME
+-widgets. Use Glade to explore the choice of widgets and to see how
+-they can be put together. You should then be able to use the same
+-settings as arguments to your widget constructors, and to the add()
+-and pack() method. Or you could us libglademm to load the GUI at runtime.</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893271"></a><a name="id2893273"></a><p><b>4.10.</b></p></td><td align="left" valign="top"><p>I'm used to MFC. Where's the Document and the View? or How do I use the Document/View idea? or How do I use the MVC pattern?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><div class="orderedlist"><ol type="1"><li><p>Document/View (which is a useful version of MVC) is not supported directly by GTK+, though it is commonly used by GTK+ programmers.  However, the TextView and TreeView interfaces are split up into model and view.</p></li><li><p>The <a class="ulink" href="http://bakery.sourceforge.net/" target="_top">Bakery</a> library makes it very easy for  gtkmm/gnomemm C++ coders to use the Document/View framework.</p></li></ol></div></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893313"></a><a name="id2893316"></a><p><b>4.11.</b></p></td><td align="left" valign="top"><p>How do I load pixmaps for use with gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Use Gdk::Pixbuf and/or Gtk::Image.  Both are easy to use and support a wide range of image file types via pixbuf loader plugins.
+-</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893332"></a><a name="id2893335"></a><p><b>4.12.</b></p></td><td align="left" valign="top"><p>Is gtkmm thread-safe?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>Paul Davis wrote:</p><p>Neither X, nor GDK nor GTK+ nor gtkmm are thread safe by
+-themselves. You must use either the gdk_threads_{enter,leave}() functions to
+-protect any and every call to GDK/GTK+/gtkmm functions, or
+-alternatively, ensure that only a single thread makes such calls. One
+-common way to do this is to have non-GUI threads send requests to the
+-GUI thread via a pipe.  The pipe is hooked into the main glib event
+-loop used by GTK.
+-</p><p>
+-Personally, i have always used the single-threaded approach, which I
+-find much more suitable for my apps.
+-</p><p>
+-Note that glibmm comes with Glib::Dispatcher, which implements
+-a cross-thread signal using the pipe approach described above.
+-</p><p>Andreas Rottmann added:</p><p>
+-If you need a more sophisticated cross-thread message-passing
+-approach, take a look at <a class="ulink" href="http://libsigcx.sourceforge.net" target="_top">libsigc++ extras</a>. It
+-provides cross-thread, typesafe slot invocation on top of <a class="ulink" href="http://libsigc.sourceforge.net" target="_top">libsigc++</a> and comes with
+-a <a class="ulink" href="http://libsigcx.sourceforge.net/docs/sigcx_starting.html" target="_top">gtkmm
+-example</a>.
+-</p></td></tr><tr class="question"><td align="left" valign="top"><a name="id2893396"></a><a name="id2893399"></a><p><b>4.13.</b></p></td><td align="left" valign="top"><p>Why does my application seem to segfault inside a dynamic_cast&lt;&gt;
+-in gtkmm?</p></td></tr><tr class="answer"><td align="left" valign="top"></td><td align="left" valign="top"><p>
+-gcc 2.96 and earlier have a bug which prevents use of dynamic_cast&lt;&gt;
+-during a constructor. This is only a problem when you derive a new
+-class from a gtkmm class and specify a specific base class
+-constructor. You can avoid this by using a different constructor. For instance, instead of using the
+-Gtk::Button("sometext") constructor, you could use the
+-default constructor and then call Gtk::Button::set_label().
+-See this <a class="ulink" href="http://bugzilla.gnome.org/show_bug.cgi?id=78578" target="_top">bug report</a> for more information. This bug does not apply to all non-default constructors - if you are using an old compiler then you should just try it and see.
+-</p></td></tr></tbody></table></div></div><div class="navfooter"><hr></div></body></html>
+diff -urN gtkmm-2.14.3.orig/docs/FAQ/Makefile.am gtkmm-2.14.3/docs/FAQ/Makefile.am
+--- gtkmm-2.14.3.orig/docs/FAQ/Makefile.am	2008-11-14 17:05:04.000000000 +0800
++++ gtkmm-2.14.3/docs/FAQ/Makefile.am	1970-01-01 08:00:00.000000000 +0800
+@@ -1,54 +0,0 @@
+-docbook_docs = gtkmm-faq.xml
+-
+-include $(top_srcdir)/docs/Makefile_web.am_fragment
+-gtkmm_faq_path  = $(web_path_docs)FAQ
+-
+-EXTRA_DIST = README gtkmm-faq.xml html
+-
+-DOCBOOK_STYLESHEET ?= http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl
+-
+-# The new XML DocBook way:
+-html/index.html: $(docbook_docs)
+-	-rm -rf html
+-	$(mkinstalldirs) html
+-	xsltproc -o html/ --catalogs $(DOCBOOK_STYLESHEET) $<
+-
+-post-html: html/index.html
+-	rsync $(rsync_args) -r html $$USER@$(web_host):$(gtkmm_faq_path)/
+-
+-doc-clean:
+-	-rm -rf html
+-
+-all-local: html/index.html
+-
+-maintainer-clean-local: doc-clean
+-
+-faqdir = $(gtkmm_docdir)/FAQ/html
+-
+-install-faq: html/index.html
+-	@$(NORMAL_INSTALL)
+-	$(mkinstalldirs) $(DESTDIR)$(faqdir)
+-	@dir='$(<D)'; for p in $$dir/*.html ; do \
+-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+-	  echo " $(INSTALL_DATA) $$p $(DESTDIR)$(faqdir)/$$f"; \
+-	  $(INSTALL_DATA) $$p $(DESTDIR)$(faqdir)/$$f; \
+-	done
+-
+-uninstall-faq: html/index.html
+-	@$(NORMAL_UNINSTALL)
+-	@dir='$(<D)'; for p in $$dir/*.html ; do \
+-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+-	  echo " rm -f $(DESTDIR)$(faqdir)/$$f"; \
+-	  rm -f $(DESTDIR)$(faqdir)/$$f; \
+-	done
+-
+-all-local: html/index.html
+-
+-install-data-local: install-faq
+-
+-uninstall-local: uninstall-faq
+-
+-maintainer-clean-local: doc-clean
+-
+-.PHONY: post-html doc-clean install-faq uninstall-faq
+-
+diff -urN gtkmm-2.14.3.orig/docs/FAQ/Makefile.in gtkmm-2.14.3/docs/FAQ/Makefile.in
+--- gtkmm-2.14.3.orig/docs/FAQ/Makefile.in	2008-11-14 17:23:58.000000000 +0800
++++ gtkmm-2.14.3/docs/FAQ/Makefile.in	1970-01-01 08:00:00.000000000 +0800
+@@ -1,424 +0,0 @@
+-# Makefile.in generated by automake 1.10.1 from Makefile.am.
+-# @configure_input@
+-
+-# Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004, 2005, 2006, 2007, 2008  Free Software Foundation, Inc.
+-# This Makefile.in is free software; the Free Software Foundation
+-# gives unlimited permission to copy and/or distribute it,
+-# with or without modifications, as long as this notice is preserved.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+-# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+-# PARTICULAR PURPOSE.
+-
+-@SET_MAKE@
+-VPATH = @srcdir@
+-pkgdatadir = $(datadir)/@PACKAGE@
+-pkglibdir = $(libdir)/@PACKAGE@
+-pkgincludedir = $(includedir)/@PACKAGE@
+-am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
+-install_sh_DATA = $(install_sh) -c -m 644
+-install_sh_PROGRAM = $(install_sh) -c
+-install_sh_SCRIPT = $(install_sh) -c
+-INSTALL_HEADER = $(INSTALL_DATA)
+-transform = $(program_transform_name)
+-NORMAL_INSTALL = :
+-PRE_INSTALL = :
+-POST_INSTALL = :
+-NORMAL_UNINSTALL = :
+-PRE_UNINSTALL = :
+-POST_UNINSTALL = :
+-build_triplet = @build@
+-host_triplet = @host@
+-DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+-	$(top_srcdir)/docs/Makefile_web.am_fragment
+-subdir = docs/FAQ
+-ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+-am__aclocal_m4_deps = $(top_srcdir)/scripts/docgen.m4 \
+-	$(top_srcdir)/scripts/macros.m4 \
+-	$(top_srcdir)/scripts/reduced.m4 $(top_srcdir)/configure.in
+-am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
+-	$(ACLOCAL_M4)
+-mkinstalldirs = $(install_sh) -d
+-CONFIG_HEADER = $(top_builddir)/config.h \
+-	$(top_builddir)/gdk/gdkmmconfig.h \
+-	$(top_builddir)/gtk/gtkmmconfig.h
+-CONFIG_CLEAN_FILES =
+-SOURCES =
+-DIST_SOURCES =
+-DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
+-ACLOCAL = @ACLOCAL@
+-AMTAR = @AMTAR@
+-AR = @AR@
+-AS = @AS@
+-ATKMM_CFLAGS = @ATKMM_CFLAGS@
+-ATKMM_LIBS = @ATKMM_LIBS@
+-AUTOCONF = @AUTOCONF@
+-AUTOHEADER = @AUTOHEADER@
+-AUTOMAKE = @AUTOMAKE@
+-AWK = @AWK@
+-CC = @CC@
+-CCDEPMODE = @CCDEPMODE@
+-CFLAGS = @CFLAGS@
+-CPP = @CPP@
+-CPPFLAGS = @CPPFLAGS@
+-CXX = @CXX@
+-CXXCPP = @CXXCPP@
+-CXXDEPMODE = @CXXDEPMODE@
+-CXXFLAGS = @CXXFLAGS@
+-CYGPATH_W = @CYGPATH_W@
+-DEFS = @DEFS@
+-DEMO_SUBDIR = @DEMO_SUBDIR@
+-DEPDIR = @DEPDIR@
+-DISABLE_DEPRECATED_API_CFLAGS = @DISABLE_DEPRECATED_API_CFLAGS@
+-DISABLE_DEPRECATED_CFLAGS = @DISABLE_DEPRECATED_CFLAGS@
+-DLLTOOL = @DLLTOOL@
+-DOCS_SUBDIR = @DOCS_SUBDIR@
+-DSYMUTIL = @DSYMUTIL@
+-ECHO = @ECHO@
+-ECHO_C = @ECHO_C@
+-ECHO_N = @ECHO_N@
+-ECHO_T = @ECHO_T@
+-EGREP = @EGREP@
+-EXEEXT = @EXEEXT@
+-F77 = @F77@
+-FFLAGS = @FFLAGS@
+-GDKMM_CFLAGS = @GDKMM_CFLAGS@
+-GDKMM_LIBS = @GDKMM_LIBS@
+-GMMPROC = @GMMPROC@
+-GMMPROC_DIR = @GMMPROC_DIR@
+-GREP = @GREP@
+-GTHREAD_CFLAGS = @GTHREAD_CFLAGS@
+-GTHREAD_LIBS = @GTHREAD_LIBS@
+-GTKMM_CFLAGS = @GTKMM_CFLAGS@
+-GTKMM_DOXYGEN_INPUT = @GTKMM_DOXYGEN_INPUT@
+-GTKMM_LIBS = @GTKMM_LIBS@
+-GTKMM_MAJOR_VERSION = @GTKMM_MAJOR_VERSION@
+-GTKMM_MICRO_VERSION = @GTKMM_MICRO_VERSION@
+-GTKMM_MINOR_VERSION = @GTKMM_MINOR_VERSION@
+-GTKMM_PC_ATKMM_DEP = @GTKMM_PC_ATKMM_DEP@
+-GTKMM_RELEASE = @GTKMM_RELEASE@
+-GTKMM_VERSION = @GTKMM_VERSION@
+-INSTALL = @INSTALL@
+-INSTALL_DATA = @INSTALL_DATA@
+-INSTALL_PROGRAM = @INSTALL_PROGRAM@
+-INSTALL_SCRIPT = @INSTALL_SCRIPT@
+-INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+-LDFLAGS = @LDFLAGS@
+-LIBGTKMM_SO_VERSION = @LIBGTKMM_SO_VERSION@
+-LIBOBJS = @LIBOBJS@
+-LIBS = @LIBS@
+-LIBTOOL = @LIBTOOL@
+-LN_S = @LN_S@
+-LTLIBOBJS = @LTLIBOBJS@
+-M4 = @M4@
+-MAINT = @MAINT@
+-MAKEINFO = @MAKEINFO@
+-MKDIR_P = @MKDIR_P@
+-NMEDIT = @NMEDIT@
+-OBJDUMP = @OBJDUMP@
+-OBJEXT = @OBJEXT@
+-PACKAGE = @PACKAGE@
+-PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
+-PACKAGE_NAME = @PACKAGE_NAME@
+-PACKAGE_STRING = @PACKAGE_STRING@
+-PACKAGE_TARNAME = @PACKAGE_TARNAME@
+-PACKAGE_VERSION = @PACKAGE_VERSION@
+-PATH_SEPARATOR = @PATH_SEPARATOR@
+-PERL_PATH = @PERL_PATH@
+-PKG_CONFIG = @PKG_CONFIG@
+-RANLIB = @RANLIB@
+-SED = @SED@
+-SET_MAKE = @SET_MAKE@
+-SHELL = @SHELL@
+-STRIP = @STRIP@
+-VERSION = @VERSION@
+-abs_builddir = @abs_builddir@
+-abs_srcdir = @abs_srcdir@
+-abs_top_builddir = @abs_top_builddir@
+-abs_top_srcdir = @abs_top_srcdir@
+-ac_ct_CC = @ac_ct_CC@
+-ac_ct_CXX = @ac_ct_CXX@
+-ac_ct_F77 = @ac_ct_F77@
+-am__include = @am__include@
+-am__leading_dot = @am__leading_dot@
+-am__quote = @am__quote@
+-am__tar = @am__tar@
+-am__untar = @am__untar@
+-bindir = @bindir@
+-build = @build@
+-build_alias = @build_alias@
+-build_cpu = @build_cpu@
+-build_os = @build_os@
+-build_vendor = @build_vendor@
+-builddir = @builddir@
+-datadir = @datadir@
+-datarootdir = @datarootdir@
+-docdir = @docdir@
+-dvidir = @dvidir@
+-exec_prefix = @exec_prefix@
+-host = @host@
+-host_alias = @host_alias@
+-host_cpu = @host_cpu@
+-host_os = @host_os@
+-host_vendor = @host_vendor@
+-htmldir = @htmldir@
+-includedir = @includedir@
+-infodir = @infodir@
+-install_sh = @install_sh@
+-libdir = @libdir@
+-libexecdir = @libexecdir@
+-localedir = @localedir@
+-localstatedir = @localstatedir@
+-mandir = @mandir@
+-mkdir_p = @mkdir_p@
+-oldincludedir = @oldincludedir@
+-pdfdir = @pdfdir@
+-prefix = @prefix@
+-program_transform_name = @program_transform_name@
+-psdir = @psdir@
+-sbindir = @sbindir@
+-sharedstatedir = @sharedstatedir@
+-srcdir = @srcdir@
+-sysconfdir = @sysconfdir@
+-target_alias = @target_alias@
+-top_build_prefix = @top_build_prefix@
+-top_builddir = @top_builddir@
+-top_srcdir = @top_srcdir@
+-docbook_docs = gtkmm-faq.xml
+-web_host = gtkmm.org
+-web_path_gtkmm = /home/murrayc/gtkmm.org/docs/gtkmm-2.4/
+-#web_path_gtkmm = /home/groups/g/gt/gtkmm/htdocs/docs/gtkmm-2.4/
+-web_path_docs = $(web_path_gtkmm)docs/
+-
+-#--delete and --delete-after are causing
+-# "
+-# Invalid file index: 1768710413 (count=0) [receiver]
+-# rsync error: protocol incompatibility (code 2) at sender.c(156)
+-# "
+-# with sourceforge recently (May 2005). murrayc.
+-#
+-#rsync_args = -vz --rsh ssh --delete --delete-after
+-rsync_args = -vz --rsh ssh
+-gtkmm_docdir = $(datadir)/doc/gtkmm-2.4/docs
+-gtkmm_faq_path = $(web_path_docs)FAQ
+-EXTRA_DIST = README gtkmm-faq.xml html
+-faqdir = $(gtkmm_docdir)/FAQ/html
+-all: all-am
+-
+-.SUFFIXES:
+-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/docs/Makefile_web.am_fragment $(am__configure_deps)
+-	@for dep in $?; do \
+-	  case '$(am__configure_deps)' in \
+-	    *$$dep*) \
+-	      cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh \
+-		&& exit 0; \
+-	      exit 1;; \
+-	  esac; \
+-	done; \
+-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  docs/FAQ/Makefile'; \
+-	cd $(top_srcdir) && \
+-	  $(AUTOMAKE) --gnu  docs/FAQ/Makefile
+-.PRECIOUS: Makefile
+-Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
+-	@case '$?' in \
+-	  *config.status*) \
+-	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
+-	  *) \
+-	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
+-	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
+-	esac;
+-
+-$(top_builddir)/config.status: $(top_srcdir)/configure $(CONFIG_STATUS_DEPENDENCIES)
+-	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-
+-$(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
+-	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-$(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
+-	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
+-
+-mostlyclean-libtool:
+-	-rm -f *.lo
+-
+-clean-libtool:
+-	-rm -rf .libs _libs
+-tags: TAGS
+-TAGS:
+-
+-ctags: CTAGS
+-CTAGS:
+-
+-
+-distdir: $(DISTFILES)
+-	@srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
+-	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's/[].[^$$\\*]/\\\\&/g'`; \
+-	list='$(DISTFILES)'; \
+-	  dist_files=`for file in $$list; do echo $$file; done | \
+-	  sed -e "s|^$$srcdirstrip/||;t" \
+-	      -e "s|^$$topsrcdirstrip/|$(top_builddir)/|;t"`; \
+-	case $$dist_files in \
+-	  */*) $(MKDIR_P) `echo "$$dist_files" | \
+-			   sed '/\//!d;s|^|$(distdir)/|;s,/[^/]*$$,,' | \
+-			   sort -u` ;; \
+-	esac; \
+-	for file in $$dist_files; do \
+-	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
+-	  if test -d $$d/$$file; then \
+-	    dir=`echo "/$$file" | sed -e 's,/[^/]*$$,,'`; \
+-	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
+-	      cp -pR $(srcdir)/$$file $(distdir)$$dir || exit 1; \
+-	    fi; \
+-	    cp -pR $$d/$$file $(distdir)$$dir || exit 1; \
+-	  else \
+-	    test -f $(distdir)/$$file \
+-	    || cp -p $$d/$$file $(distdir)/$$file \
+-	    || exit 1; \
+-	  fi; \
+-	done
+-check-am: all-am
+-check: check-am
+-all-am: Makefile all-local
+-installdirs:
+-install: install-am
+-install-exec: install-exec-am
+-install-data: install-data-am
+-uninstall: uninstall-am
+-
+-install-am: all-am
+-	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+-
+-installcheck: installcheck-am
+-install-strip:
+-	$(MAKE) $(AM_MAKEFLAGS) INSTALL_PROGRAM="$(INSTALL_STRIP_PROGRAM)" \
+-	  install_sh_PROGRAM="$(INSTALL_STRIP_PROGRAM)" INSTALL_STRIP_FLAG=-s \
+-	  `test -z '$(STRIP)' || \
+-	    echo "INSTALL_PROGRAM_ENV=STRIPPROG='$(STRIP)'"` install
+-mostlyclean-generic:
+-
+-clean-generic:
+-
+-distclean-generic:
+-	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
+-
+-maintainer-clean-generic:
+-	@echo "This command is intended for maintainers to use"
+-	@echo "it deletes files that may require special tools to rebuild."
+-clean: clean-am
+-
+-clean-am: clean-generic clean-libtool mostlyclean-am
+-
+-distclean: distclean-am
+-	-rm -f Makefile
+-distclean-am: clean-am distclean-generic
+-
+-dvi: dvi-am
+-
+-dvi-am:
+-
+-html: html-am
+-
+-info: info-am
+-
+-info-am:
+-
+-install-data-am: install-data-local
+-
+-install-dvi: install-dvi-am
+-
+-install-exec-am:
+-
+-install-html: install-html-am
+-
+-install-info: install-info-am
+-
+-install-man:
+-
+-install-pdf: install-pdf-am
+-
+-install-ps: install-ps-am
+-
+-installcheck-am:
+-
+-maintainer-clean: maintainer-clean-am
+-	-rm -f Makefile
+-maintainer-clean-am: distclean-am maintainer-clean-generic \
+-	maintainer-clean-local
+-
+-mostlyclean: mostlyclean-am
+-
+-mostlyclean-am: mostlyclean-generic mostlyclean-libtool
+-
+-pdf: pdf-am
+-
+-pdf-am:
+-
+-ps: ps-am
+-
+-ps-am:
+-
+-uninstall-am: uninstall-local
+-
+-.MAKE: install-am install-strip
+-
+-.PHONY: all all-am all-local check check-am clean clean-generic \
+-	clean-libtool distclean distclean-generic distclean-libtool \
+-	distdir dvi dvi-am html html-am info info-am install \
+-	install-am install-data install-data-am install-data-local \
+-	install-dvi install-dvi-am install-exec install-exec-am \
+-	install-html install-html-am install-info install-info-am \
+-	install-man install-pdf install-pdf-am install-ps \
+-	install-ps-am install-strip installcheck installcheck-am \
+-	installdirs maintainer-clean maintainer-clean-generic \
+-	maintainer-clean-local mostlyclean mostlyclean-generic \
+-	mostlyclean-libtool pdf pdf-am ps ps-am uninstall uninstall-am \
+-	uninstall-local
+-
+-
+-DOCBOOK_STYLESHEET ?= http://docbook.sourceforge.net/release/xsl/current/html/chunk.xsl
+-
+-# The new XML DocBook way:
+-html/index.html: $(docbook_docs)
+-	-rm -rf html
+-	$(mkinstalldirs) html
+-	xsltproc -o html/ --catalogs $(DOCBOOK_STYLESHEET) $<
+-
+-post-html: html/index.html
+-	rsync $(rsync_args) -r html $$USER@$(web_host):$(gtkmm_faq_path)/
+-
+-doc-clean:
+-	-rm -rf html
+-
+-all-local: html/index.html
+-
+-maintainer-clean-local: doc-clean
+-
+-install-faq: html/index.html
+-	@$(NORMAL_INSTALL)
+-	$(mkinstalldirs) $(DESTDIR)$(faqdir)
+-	@dir='$(<D)'; for p in $$dir/*.html ; do \
+-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+-	  echo " $(INSTALL_DATA) $$p $(DESTDIR)$(faqdir)/$$f"; \
+-	  $(INSTALL_DATA) $$p $(DESTDIR)$(faqdir)/$$f; \
+-	done
+-
+-uninstall-faq: html/index.html
+-	@$(NORMAL_UNINSTALL)
+-	@dir='$(<D)'; for p in $$dir/*.html ; do \
+-	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+-	  echo " rm -f $(DESTDIR)$(faqdir)/$$f"; \
+-	  rm -f $(DESTDIR)$(faqdir)/$$f; \
+-	done
+-
+-all-local: html/index.html
+-
+-install-data-local: install-faq
+-
+-uninstall-local: uninstall-faq
+-
+-maintainer-clean-local: doc-clean
+-
+-.PHONY: post-html doc-clean install-faq uninstall-faq
+-# Tell versions [3.59,3.63) of GNU make to not export all variables.
+-# Otherwise a system limit (for SysV at least) may be exceeded.
+-.NOEXPORT:
+diff -urN gtkmm-2.14.3.orig/docs/Makefile.am gtkmm-2.14.3/docs/Makefile.am
+--- gtkmm-2.14.3.orig/docs/Makefile.am	2008-11-14 17:05:05.000000000 +0800
++++ gtkmm-2.14.3/docs/Makefile.am	2009-03-05 11:55:14.000000000 +0800
+@@ -1,7 +1,7 @@
+ ## Copyright (c) 2001
+ ## The gtkmm development team.
+ 
+-SUBDIRS = FAQ images reference
++SUBDIRS = images reference
+ 
+ EXTRA_DIST = Makefile_web.am_fragment
+ 
+diff -urN gtkmm-2.14.3.orig/docs/Makefile.in gtkmm-2.14.3/docs/Makefile.in
+--- gtkmm-2.14.3.orig/docs/Makefile.in	2008-11-14 17:23:58.000000000 +0800
++++ gtkmm-2.14.3/docs/Makefile.in	2009-03-05 11:55:38.000000000 +0800
+@@ -198,7 +198,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = FAQ images reference
++SUBDIRS = images reference
+ EXTRA_DIST = Makefile_web.am_fragment
+ web_host = gtkmm.org
+ web_path_gtkmm = /home/murrayc/gtkmm.org/docs/gtkmm-2.4/

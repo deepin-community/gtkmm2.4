@@ -1,0 +1,80 @@
+Source: gtkmm2.4
+Section: oldlibs
+Priority: optional
+Maintainer: Debian GNOME Maintainers <pkg-gnome-maintainers@lists.alioth.debian.org>
+Uploaders: @GNOME_TEAM@
+Build-Depends: debhelper (>= 11),
+               gnome-pkg-tools (>= 0.11),
+               libgtk2.0-dev (>= 2.24.0),
+               libglibmm-2.4-dev (>= 2.27.93),
+               libpangomm-1.4-dev (>= 2.27.1),
+               libatkmm-1.6-dev (>= 2.22.2),
+               mm-common (>= 0.9.5)
+Rules-Requires-Root: no
+Standards-Version: 4.3.0
+Vcs-Browser: https://salsa.debian.org/gnome-team/gtkmm2.4
+Vcs-Git: https://salsa.debian.org/gnome-team/gtkmm2.4.git
+Homepage: https://www.gtkmm.org/
+
+Package: libgtkmm-2.4-dev
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         libgtkmm-2.4-1v5 (= ${binary:Version}),
+         libgtk2.0-dev (>= 2.24.0),
+         libglibmm-2.4-dev (>= 2.27.93),
+         libpangomm-1.4-dev (>= 2.27.1),
+         libatkmm-1.6-dev (>= 2.22.2)
+Suggests: libgtkmm-2.4-doc
+Breaks: libgtkmm-2.4-doc (<< 1:2.24.5-3)
+Replaces: libgtkmm-2.4-doc (<< 1:2.24.5-3)
+Description: C++ wrappers for GTK+ 2 (development files)
+ Gtkmm is a C++ interface for the popular GUI library GTK+, with API version
+ 2.4.  Gtkmm provides a convenient interface for C++ programmers to create
+ graphical user interfaces with GTK+'s flexible OO framework. Highlights
+ include type safe callbacks, widgets extensible using inheritance and over 180
+ classes that can be freely combined to quickly create complex user interfaces.
+ .
+ This package is deprecated. Please see the libgtkmm-3.0-dev package for a
+ newer version, which wraps GTK+ 3 instead.
+ .
+ This package contains development files and examples, as well as a gtkmm-demo
+ program.
+
+Package: libgtkmm-2.4-1v5
+Architecture: any
+Multi-Arch: same
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Conflicts: libgtkmm-2.4-1c2a
+Replaces: libgtkmm-2.4-1c2a
+Description: C++ wrappers for GTK+ 2 (shared libraries)
+ Gtkmm is a C++ interface for the popular GUI library GTK+, with API version
+ 2.4.  Gtkmm provides a convenient interface for C++ programmers to create
+ graphical user interfaces with GTK+'s flexible OO framework. Highlights
+ include type safe callbacks, widgets extensible using inheritance and over 180
+ classes that can be freely combined to quickly create complex user interfaces.
+ .
+ This package contains shared libraries.
+
+Package: libgtkmm-2.4-doc
+Section: doc
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         lynx | www-browser,
+         doc-base
+Recommends: gtkmm-documentation
+Description: C++ wrappers for GTK+ 2 (documentation)
+ Gtkmm is a C++ interface for the popular GUI library GTK+, with API version
+ 2.4.  Gtkmm provides a convenient interface for C++ programmers to create
+ graphical user interfaces with GTK+'s flexible OO framework. Highlights
+ include type safe callbacks, widgets extensible using inheritance and over 180
+ classes that can be freely combined to quickly create complex user interfaces.
+ .
+ This package is deprecated. Please see the libgtkmm-3.0-doc package for
+ the documentation of a newer version, which wraps GTK+ 3 instead.
+ .
+ This package contains FAQ, and reference documentation.
